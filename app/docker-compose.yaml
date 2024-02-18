@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  story-telling-be-app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:8000"
+    restart: on-failure
+    environment:
+      - DB_USERNAME=kc
+      - DB_PASSWORD=Kwizeraeager14
+      - DB_DATABASE=stories
+      - DB_HOST=postgres
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - cmu_msai_network
+    volumes:
+      - ./app:/usr/src/app/app
+    depends_on:
+      - postgres
+      
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_DB=stories
+      - POSTGRES_USER=kc
+      - POSTGRES_PASSWORD=Kwizeraeager14
+    command: ["postgres", "-c", "max_connections=200", "-c", "timezone=Etc/UTC", "-c", "default_text_search_config=pg_catalog.english"]
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - cmu_msai_network
+
+networks:
+  cmu_msai_network:
+    driver: bridge
+volumes:
+  postgres-data:
