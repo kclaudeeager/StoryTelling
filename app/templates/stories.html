@@ -1,0 +1,47 @@
+<!-- Render the stories in a table form -->
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Stories</h2>
+    <table>
+        <tr>
+            <th>Story ID</th>
+            <th>Story Text</th>
+            <th>Genre</th>
+            <th>Origin</th>
+            <th>Demographic</th>
+            <th>Themes</th>
+        </tr>
+        {% for story in stories %}
+        <tr>
+            <td>{{ story.story_id }}</td>
+            <td>{{ story.story_text }}</td>
+            <td>{{ story.genre }}</td>
+            <td>{{ story.origin }}</td>
+            <td>{{ story.demographic }}</td>
+            <td>{{ story.themes }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

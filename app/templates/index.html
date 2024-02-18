@@ -95,7 +95,11 @@ document.getElementById('storyForm').addEventListener('submit', function(event) 
         body: JSON.stringify(storyData),
     })
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => {console.log(data)
+        alert('Story successfully added'); 
+        // reset the form after posting
+        document.getElementById('storyForm').reset();
+    })
     .catch((error) => console.error('Error:', error));
 });
 </script>
