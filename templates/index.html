@@ -59,8 +59,7 @@
 <h2>Story Form</h2>
 
 <form id="storyForm">
-    <label for="story_id">Story ID:</label>
-    <input type="text" id="story_id" name="story_id">
+    
     <label for="story_text">Story Text:</label>
     <textarea required id="story_text" name="story_text"></textarea>
     <label for="genre">Genre:</label>
@@ -79,7 +78,7 @@ document.getElementById('storyForm').addEventListener('submit', function(event) 
     event.preventDefault();
 
     var storyData = {
-        story_id: document.getElementById('story_id').value,
+        story_id: "",
         story_text: document.getElementById('story_text').value,
         genre: document.getElementById('genre').value,
         origin: document.getElementById('origin').value,
