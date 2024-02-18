@@ -1,0 +1,7 @@
+fastapi==0.68.1
+uvicorn==0.15.0
+aiofiles==0.7.0
+starlette==0.14.2
+Jinja2==3.0.3
+asyncpg
+python-dotenv
