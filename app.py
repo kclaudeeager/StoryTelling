@@ -71,3 +71,22 @@ async def get_stories(request: Request):
     stories = [dict(row) for row in rows]
     
     return stories
+# add a route to get a single story by its id
+@app.get("/story/{story_id}")
+async def get_story(story_id: str):
+    row = await app.state.db.fetchrow("SELECT * FROM stories WHERE story_id = $1", story_id)
+    story = dict(row)
+    return story
+# add a route to delete a story by its id
+@app.delete("/story/{story_id}")
+async def delete_story(story_id: str):
+    await app.state.db.execute("DELETE FROM stories WHERE story_id = $1", story_id)
+    return {"message": "Story deleted successfully"}
+# add a route to update a story by its id
+@app.put("/story/{story_id}")
+async def update_story(story_id: str, story: Story):
+    await app.state.db.execute('''
+        UPDATE stories SET story_text = $1, genre = $2, origin = $3, demographic = $4, themes = $5 WHERE story_id = $6
+    ''', story.story_text, story.genre, story.size, story.demographic, story.themes, story_id)
+    return {"message": "Story updated successfully"}
+

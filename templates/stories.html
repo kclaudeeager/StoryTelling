@@ -31,6 +31,8 @@
             <th>Size</th>
             <th>Demographic</th>
             <th>Themes</th>
+            <!-- Add action like delete, update or view a single story -->
+            <th>Action</th>
         </tr>
         {% for story in stories %}
         <tr>
@@ -40,6 +42,11 @@
             <td>{{ story.size }}</td>
             <td>{{ story.demographic }}</td>
             <td>{{ story.themes }}</td>
+            <td>
+                <a href="/stories/{{ story.story_id }}">View</a>
+                <a href="/stories/{{ story.story_id }}/edit">Edit</a>
+                <a href="/stories/{{ story.story_id }}/delete">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
