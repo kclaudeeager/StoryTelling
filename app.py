@@ -18,7 +18,7 @@ class Story(BaseModel):
     story_id: str
     story_text: str
     genre: str
-    origin: str
+    size: str
     demographic: str
     themes: str
 
@@ -55,7 +55,7 @@ async def add_story(story: Story):
     story_id = str(uuid.uuid4())
     await app.state.db.execute('''
         INSERT INTO stories VALUES ($1, $2, $3, $4, $5, $6)
-    ''', story_id, story.story_text, story.genre, story.origin, story.demographic, story.themes)
+    ''', story_id, story.story_text, story.genre, story.size, story.demographic, story.themes)
     return {"message": "Story added successfully", "story_id": story_id}
 
 @app.get("/stories-show", response_class=HTMLResponse)
