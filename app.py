@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request,HTTPException
 from fastapi.responses import HTMLResponse 
 from starlette.templating import Jinja2Templates
 import asyncpg
@@ -71,10 +71,13 @@ async def get_stories(request: Request):
     stories = [dict(row) for row in rows]
     
     return stories
+
 # add a route to get a single story by its id
 @app.get("/story/{story_id}")
 async def get_story(story_id: str):
     row = await app.state.db.fetchrow("SELECT * FROM stories WHERE story_id = $1", story_id)
+    if row is None:
+        raise HTTPException(status_code=404, detail="Story not found")
     story = dict(row)
     return story
 # add a route to delete a story by its id
