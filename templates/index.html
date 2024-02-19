@@ -64,8 +64,14 @@
     <textarea required id="story_text" name="story_text"></textarea>
     <label for="genre">Genre:</label>
     <input type="text" id="genre" name="genre">
-    <label for="origin">Origin:</label>
-    <input required type="text" id="origin" name="origin">
+    <label for="size">Size:</label>
+    <!-- choices, large, medium and small -->
+    <select id="size" name="size">
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+    </select>
+   
     <label for="demographic">Demographic:</label>
     <input required type="text" id="demographic" name="demographic">
     <label for="themes">Themes:</label>
@@ -81,7 +87,7 @@ document.getElementById('storyForm').addEventListener('submit', function(event) 
         story_id: "",
         story_text: document.getElementById('story_text').value,
         genre: document.getElementById('genre').value,
-        origin: document.getElementById('origin').value,
+        size: document.getElementById('size').value,
         demographic: document.getElementById('demographic').value,
         themes: document.getElementById('themes').value
     };
