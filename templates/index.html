@@ -148,37 +148,38 @@
 
     <script>
         document.getElementById('storyForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-             
-            var storyData = {
-                story_id: "",
-                story_title: document.getElementById('story_title').value,
-                story_text: document.getElementById('story_text').value,
-                genre: document.getElementById('genre').value,
-                size: document.getElementById('size').value,
-                demographic: {
-                    age: document.querySelector('select[name="age"]').value,
-                    gender: document.querySelector('select[name="gender"]').value
-                },
-                themes: document.getElementById('themes').value
-            };
+    event.preventDefault();
+     
+    var storyData = {
+        story_id: "",
+        story_title: document.getElementById('story_title').value,
+        story_text: document.getElementById('story_text').value,
+        genre: document.getElementById('genre').value,
+        size: document.getElementById('size').value,
+        demographic: {
+            age: document.querySelector('select[name="age"]').value,
+            gender: document.querySelector('select[name="gender"]').value
+        },
+        themes: document.getElementById('themes').value
+    };
 
-            fetch('/story', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(storyData),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    alert('Story successfully added');
-                    // reset the form after posting
-                    document.getElementById('storyForm').reset();
-                })
-                .catch((error) => console.error('Error:', error));
-        });
+    fetch('/story', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(storyData),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            alert('Story successfully added');
+            // reset the form after posting
+            document.getElementById('storyForm').reset();
+        })
+        .catch((error) => console.error('Error:', error));
+});
+
     </script>
 
 </body>
