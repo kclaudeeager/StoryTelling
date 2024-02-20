@@ -1,3 +1,4 @@
+import json
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse 
 from starlette.templating import Jinja2Templates
@@ -54,14 +55,14 @@ async def shutdown():
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
-@app.post("/story")
-async def add_story(story: Story):
-    story_id = str(uuid.uuid4())
-    await app.state.db.execute('''
-        INSERT INTO stories VALUES ($1, $2, $3, $4, $5, $6, $7)
-    ''', story_id, story.story_title, story.story_text, story.genre, story.size, story.demographic, story.themes)
-    return {"message": "Story added successfully", "story_id": story_id}
+@app.post("/stories")
+async def create_story(story: Story):
+    query = """
+        INSERT INTO stories (story_id, story_title, story_text, genre, size, demographic, themes)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+    """
+    await app.state.db.execute(query, story.story_id, story.story_title, story.story_text, story.genre, story.size, json.dumps(story.demographic), story.themes)
+    return {"message": "Story created successfully"}
 
 @app.get("/stories-show", response_class=HTMLResponse)
 async def get_stories(request: Request):
