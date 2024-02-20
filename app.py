@@ -19,7 +19,7 @@ class Story(BaseModel):
     story_text: str
     genre: str
     size: str
-    demographic: str
+    demographic: list= []
     themes: str
 
 async def get_db():

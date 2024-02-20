@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <style>
         body {
@@ -27,14 +28,15 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        
+
         textarea {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            resize: vertical; /* allows the user to resize the textarea vertically */
+            resize: vertical;
+            /* allows the user to resize the textarea vertically */
         }
 
         input[type="submit"] {
@@ -52,6 +54,7 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+
         select {
             width: 100%;
             padding: 10px;
@@ -59,63 +62,103 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        
+
+        .demographic {
+            margin-top: 20px;
+        }
+
+        .demographic h3 {
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-top: 20px;
+        }
     </style>
 </head>
+
 <body>
 
-<h2>Story Form</h2>
+    <h2>Story Form</h2>
 
-<form id="storyForm">
-    
-    <label for="story_text">Story Text:</label>
-    <textarea required id="story_text" name="story_text"></textarea>
-    <label for="genre">Genre:</label>
-    <input type="text" id="genre" name="genre">
-    <label for="size">Size:</label>
-    <!-- choices, large, medium and small -->
-    <select id="size" name="size">
-        <option value="small">Small</option>
-        <option value="medium">Medium</option>
-        <option value="large">Large</option>
-    </select>
-   
-    <label for="demographic">Demographic:</label>
-    <input required type="text" id="demographic" name="demographic">
-    <label for="themes">Themes:</label>
-    <input required type="text" id="themes" name="themes">
-    <input type="submit" value="Submit">
-</form>
+    <form id="storyForm">
 
-<script>
-document.getElementById('storyForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+        <label for="story_text">Story Text:</label>
+        <textarea required id="story_text" name="story_text"></textarea>
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" name="genre">
+        <div class="form-group">
+            <label for="size">Size:</label>
+            <!-- choices, large, medium and small -->
+            <select id="size" name="size">
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
 
-    var storyData = {
-        story_id: "",
-        story_text: document.getElementById('story_text').value,
-        genre: document.getElementById('genre').value,
-        size: document.getElementById('size').value,
-        demographic: document.getElementById('demographic').value,
-        themes: document.getElementById('themes').value
-    };
+        </div>
 
-    fetch('/story', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(storyData),
-    })
-    .then(response => response.json())
-    .then(data => {console.log(data)
-        alert('Story successfully added'); 
-        // reset the form after posting
-        document.getElementById('storyForm').reset();
-    })
-    .catch((error) => console.error('Error:', error));
-});
-</script>
+        <div class="demographic form-group">
+            <label for="demographic">Demographic:</label>
+            <h3>Age:</h3>
+
+            <select name="age">
+                <option value="children">Children</option>
+                <option value="teenagers">Teenagers</option>
+                <option value="adults">Adults</option>
+                <option value="elderly">Elderly</option>
+                <option value="all">All</option>
+            </select>
+
+            <h3>Gender:</h3>
+            <select name="gender">
+                <option value="male">Male</option>
+                <option value="female">female</option>
+                <option value="all">All</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="themes">Themes:</label>
+            <input required type="text" id="themes" name="themes">
+        </div>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById('storyForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+             
+            var storyData = {
+                story_id: "",
+                story_text: document.getElementById('story_text').value,
+                genre: document.getElementById('genre').value,
+                size: document.getElementById('size').value,
+                demographic: {
+                    age: document.querySelector('select[name="age"]').value,
+                    gender: document.querySelector('select[name="gender"]').value
+                },
+                themes: document.getElementById('themes').value
+            };
+
+            fetch('/story', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(storyData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    alert('Story successfully added');
+                    // reset the form after posting
+                    document.getElementById('storyForm').reset();
+                })
+                .catch((error) => console.error('Error:', error));
+        });
+    </script>
 
 </body>
+
 </html>
