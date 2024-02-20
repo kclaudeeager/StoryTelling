@@ -83,6 +83,9 @@
 
     <form id="storyForm">
 
+        <label for="story_title">Story Title:</label>
+        <input required type="text" id="story_title" name="story_title">
+
         <label for="story_text">Story Text:</label>
         <textarea required id="story_text" name="story_text"></textarea>
         <label for="genre">Genre:</label>
@@ -131,6 +134,7 @@
              
             var storyData = {
                 story_id: "",
+                story_title: document.getElementById('story_title').value,
                 story_text: document.getElementById('story_text').value,
                 genre: document.getElementById('genre').value,
                 size: document.getElementById('size').value,

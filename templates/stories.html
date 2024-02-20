@@ -26,6 +26,7 @@
     <table>
         <tr>
             <th>Story ID</th>
+            <th>Story title</th>
             <th>Story Text</th>
             <th>Genre</th>
             <th>Size</th>
@@ -37,6 +38,7 @@
         {% for story in stories %}
         <tr>
             <td>{{ story.story_id }}</td>
+            <td>{{ story.story_title }}</td>
             <td>{{ story.story_text }}</td>
             <td>{{ story.genre }}</td>
             <td>{{ story.size }}</td>

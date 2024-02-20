@@ -16,6 +16,7 @@ app = FastAPI()
 
 class Story(BaseModel):
     story_id: str
+    story_title: str
     story_text: str
     genre: str
     size: str
@@ -95,8 +96,8 @@ async def delete_story(story_id: str):
 async def update_story(story_id: str, story: Story):
     # Validate input data here if necessary
     result = await app.state.db.execute('''
-        UPDATE stories SET story_text = $1, genre = $2, origin = $3, demographic = $4, themes = $5 WHERE story_id = $6
-    ''', story.story_text, story.genre, story.size, story.demographic, story.themes, story_id)
+        UPDATE stories SET story_title = $1, story_text = $2, genre = $3, origin = $4, demographic = $5, themes = $6 WHERE story_id = $7
+    ''',story.story_title, story.story_text, story.genre, story.size, story.demographic, story.themes, story_id)
     if result == "UPDATE 0":
         raise HTTPException(status_code=404, detail="Story not found")
     return {"message": "Story updated successfully"}
