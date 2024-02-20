@@ -90,7 +90,11 @@ async def delete_story(story_id: str):
     if result == "DELETE 0":
         raise HTTPException(status_code=404, detail="Story not found")
     return {"message": "Story deleted successfully"}
-
+# delete all and reset the database
+@app.delete("/stories")
+async def delete_stories():
+    result = await app.state.db.execute("DELETE FROM stories")
+    return {"message": "All stories deleted successfully"}
 # Update a story by its ID
 @app.put("/story/{story_id}")
 async def update_story(story_id: str, story: Story):
