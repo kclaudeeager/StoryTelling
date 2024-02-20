@@ -55,7 +55,7 @@ async def shutdown():
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.post("/stories")
+@app.post("/story")
 async def create_story(story: Story):
     query = """
         INSERT INTO stories (story_id, story_title, story_text, genre, size, demographic, themes)
