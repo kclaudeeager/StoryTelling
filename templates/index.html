@@ -156,10 +156,10 @@
     story_text: document.getElementById('story_text').value,
     genre: document.getElementById('genre').value,
     size: document.getElementById('size').value,
-    demographic: JSON.stringify({
+    demographic: {
         age: document.querySelector('select[name="age"]').value,
         gender: document.querySelector('select[name="gender"]').value
-    }),
+    },
     themes: document.getElementById('themes').value
 };
 
