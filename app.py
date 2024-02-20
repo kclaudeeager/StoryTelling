@@ -7,14 +7,14 @@ from pydantic import BaseModel
 import os
 import uuid
 from dotenv import load_dotenv
-
+from typing import Optional
 load_dotenv()
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
 class Story(BaseModel):
-    story_id: int
+    story_id: Optional[int] = None
     story_title: str
     story_text: str
     genre: str
