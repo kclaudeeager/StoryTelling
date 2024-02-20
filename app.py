@@ -35,9 +35,9 @@ async def get_db():
 async def startup():
     app.state.db = await get_db()
     await app.state.db.execute('''
-        # DROP TABLE IF EXISTS stories;
+        DROP TABLE IF EXISTS stories;
         CREATE TABLE IF NOT EXISTS stories (
-            story_id TEXT PRIMARY KEY,
+           story_id SERIAL PRIMARY KEY,
             story_title TEXT,
             story_text TEXT,
             genre TEXT,
@@ -57,6 +57,7 @@ async def read_root(request: Request):
 
 @app.post("/story")
 async def create_story(story: Story):
+    
     query = """
         INSERT INTO stories (story_id, story_title, story_text, genre, size, demographic, themes)
         VALUES ($1, $2, $3, $4, $5, $6, $7)
