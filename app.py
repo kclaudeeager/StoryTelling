@@ -35,7 +35,7 @@ async def get_db():
 async def startup():
     app.state.db = await get_db()
     await app.state.db.execute('''
-        DROP TABLE IF EXISTS stories;
+        # DROP TABLE IF EXISTS stories;
         CREATE TABLE stories (
             story_id TEXT PRIMARY KEY,
             story_title TEXT,
