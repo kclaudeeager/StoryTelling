@@ -67,7 +67,15 @@
 
         function updateStory(story_id) {
             // Redirect to the story update page
-            window.location.href = `/story/${story_id}/update`;
+            fetch(`/story/${story_id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => console.log(data))
+                .catch(error => console.error('There has been a problem with your fetch operation:', error));
         }
 
         function deleteStory(story_id) {
