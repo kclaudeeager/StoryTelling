@@ -5,7 +5,7 @@ import asyncpg
 from pydantic import BaseModel
 import os
 import uuid
-
+from typing import List
 from dotenv import load_dotenv
 load_dotenv()
 app = FastAPI()
@@ -13,14 +13,13 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 app = FastAPI()
-
 class Story(BaseModel):
     story_id: str
     story_title: str
     story_text: str
     genre: str
     size: str
-    demographic: list= []
+    demographic: List[str] = []  # Default value as an empty list
     themes: str
 
 async def get_db():
@@ -35,13 +34,20 @@ async def get_db():
 
 @app.on_event("startup")
 async def startup():
-    print(os.getenv("DB_USERNAME"))
     app.state.db = await get_db()
     await app.state.db.execute('''
-        CREATE TABLE IF NOT EXISTS stories
-        (story_id TEXT, story_text TEXT, genre TEXT, origin TEXT, demographic TEXT, themes TEXT)
+        DROP TABLE IF EXISTS stories;
+        CREATE TABLE stories (
+            story_id TEXT PRIMARY KEY,
+            story_title TEXT,
+            story_text TEXT,
+            genre TEXT,
+            size TEXT,
+            demographic TEXT[],
+            themes TEXT
+        )
     ''')
-
+    
 @app.on_event("shutdown")
 async def shutdown():
     await app.state.db.close()
