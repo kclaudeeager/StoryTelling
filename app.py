@@ -22,6 +22,14 @@ class Story(BaseModel):
     demographic: dict
     themes: str
 
+class StoryUpdate(BaseModel):
+    story_title: Optional[str] = None
+    story_text: Optional[str] = None
+    genre: Optional[str] = None
+    size: Optional[str] = None
+    demographic: Optional[dict] = None
+    themes: Optional[str] = None
+
 async def get_db():
     conn = await asyncpg.connect(
         user=os.getenv("DB_USERNAME"),
@@ -106,11 +114,18 @@ async def delete_stories():
 
 # Update a story by its ID
 @app.put("/story/{story_id}")
-async def update_story(story_id: str, story: Story):
-    # Validate input data here if necessary
-    result = await app.state.db.execute('''
-        UPDATE stories SET story_title = $1, story_text = $2, genre = $3, size = $4, demographic = $5, themes = $6 WHERE story_id = $7
-    ''', story.story_title, story.story_text, story.genre, story.size, story.demographic, story.themes, story_id)
-    if result == "UPDATE 0":
+async def update_story(story_id: int, story: StoryUpdate):
+    # Get the existing story
+    existing_story = await app.state.db.fetch_one('SELECT * FROM stories WHERE story_id = $1', story_id)
+    if existing_story is None:
         raise HTTPException(status_code=404, detail="Story not found")
+
+    # Update the existing story with the new values
+    updated_story = existing_story.copy(update=story.dict(exclude_unset=True))
+
+    # Update the story in the database
+    await app.state.db.execute('''
+        UPDATE stories SET story_title = $1, story_text = $2, genre = $3, size = $4, demographic = $5, themes = $6 WHERE story_id = $7
+    ''', updated_story.story_title, updated_story.story_text, updated_story.genre, updated_story.size, updated_story.demographic, updated_story.themes, story_id)
+
     return {"message": "Story updated successfully"}
