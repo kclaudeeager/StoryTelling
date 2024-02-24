@@ -91,8 +91,8 @@ async def get_stories(request: Request):
 # add a route to get a single story by its id
 # Get a story by its ID
 @app.get("/story/{story_id}")
-async def get_story(story_id: str):
-    row = await app.state.db.fetchrow("SELECT * FROM stories WHERE story_id = $1", story_id)
+async def get_story(story_id: int):
+    row = await app.state.db.fetchrow("SELECT * FROM stories WHERE story_id = $1", int(story_id))
     if row is None:
         raise HTTPException(status_code=404, detail="Story not found")
     story = dict(row)
@@ -100,8 +100,8 @@ async def get_story(story_id: str):
 
 # Delete a story by its ID
 @app.delete("/story/{story_id}")
-async def delete_story(story_id: str):
-    result = await app.state.db.execute("DELETE FROM stories WHERE story_id = $1", story_id)
+async def delete_story(story_id: int):
+    result = await app.state.db.execute("DELETE FROM stories WHERE story_id = $1", int(story_id))
     if result == "DELETE 0":
         raise HTTPException(status_code=404, detail="Story not found")
     return {"message": "Story deleted successfully"}
@@ -116,7 +116,7 @@ async def delete_stories():
 @app.put("/story/{story_id}")
 async def update_story(story_id: int, story: StoryUpdate):
     # Get the existing story
-    existing_story = await app.state.db.fetchrow('SELECT * FROM stories WHERE story_id = $1', story_id)
+    existing_story = await app.state.db.fetchrow('SELECT * FROM stories WHERE story_id = $1', int(story_id))
     if existing_story is None:
         raise HTTPException(status_code=404, detail="Story not found")
 
