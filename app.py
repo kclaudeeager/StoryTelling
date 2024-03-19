@@ -8,6 +8,8 @@ import os
 import uuid
 from dotenv import load_dotenv
 from typing import Optional
+import glob
+
 load_dotenv()
 app = FastAPI()
 
@@ -129,3 +131,29 @@ async def update_story(story_id: int, story: StoryUpdate):
     ''', updated_story['story_title'], updated_story['story_text'], updated_story['genre'], updated_story['size'], json.dumps(updated_story['demographic']), updated_story['themes'], story_id)
 
     return {"message": "Story updated successfully"}
+
+
+
+@app.post("/upload-stories")
+async def upload_stories():
+    # Get all JSON files in the isomero_json folder
+    json_files = glob.glob('isomero_json/*.json')
+
+    for file_name in json_files:
+        # Open the file and load the JSON data
+        with open(file_name, 'r') as f:
+            data = json.load(f)
+
+        # Extract the content, tags, and title fields from the JSON data
+        story_text = data.get('content', '')
+        themes = ', '.join(data.get('tags', []))
+        story_title = data.get('title', '')
+
+        # Insert the story into the database
+        query = """
+            INSERT INTO stories (story_title, story_text, themes)
+            VALUES ($1, $2, $3)
+        """
+        await app.state.db.execute(query, story_title, story_text, themes)
+
+    return {"message": "Stories uploaded successfully"}
